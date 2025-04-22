@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
   
        
-        if (!email.includes("@") && !email.includes(".")) {
+        if (!(email.includes("@") && email.indexOf("@") < email.lastIndexOf("."))) {
           event.preventDefault();
           alert("Please enter a valid email");
           return;
