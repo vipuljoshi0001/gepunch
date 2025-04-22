@@ -6,6 +6,12 @@ function updateTime() {
 
 setInterval(updateTime, 1000);
 
+document.addEventListener("DOMContentLoaded", () => {
+    const now = new Date();
+    const dateString = now.toLocaleDateString();
+    document.getElementById("real-date").textContent = dateString;
+});
+
 let totalHours = 0;
 let dailyHours = 0;
 let weeklyHours = 0;
