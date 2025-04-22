@@ -24,7 +24,7 @@ const email = document.getElementById("email").value;
 const password = document.getElementById("password").value;
 
 const submit = document.getElementById("submit").value;
-submit.addEventListener("click", function(event)
+submit.addEventListener("click", function(sigin)
 {
     event.preventDefault()
     const auth = getAuth();
