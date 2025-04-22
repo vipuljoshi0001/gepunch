@@ -69,13 +69,17 @@ body {
 .input-wrapper input,
 .input-wrapper select {
   width: 100%;
-  border-radius: 99px;
+  height: 2.5rem;
+  box-sizing: border-box;
+  border-radius: 9999px;
   background-color: #D1D5DB;
   color: black;
-  padding: 0.6rem 2rem 0.5rem 2.5rem;
+  padding-left: 2.5rem;
+  padding-right: 1rem;
   font-size: 0.875rem;
   border: none;
   outline: none;
+  appearance: none;
 }
 
 .input-wrapper input::placeholder {
