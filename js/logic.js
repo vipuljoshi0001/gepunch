@@ -14,9 +14,10 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
         }
   
-        if (!email.includes("@")) {
+       
+        if (!email.includes("@") && !email.includes(".")) {
           event.preventDefault();
-          alert("Please enter a valid email (must include '@')");
+          alert("Please enter a valid email");
           return;
         }
   
