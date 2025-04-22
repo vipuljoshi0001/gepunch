@@ -14,9 +14,10 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
         }
   
-        if (!email.includes("@")) {
+       
+        if (!(email.includes("@") && email.indexOf("@") < email.lastIndexOf("."))) {
           event.preventDefault();
-          alert("Please enter a valid email (must include '@')");
+          alert("Please enter a valid email");
           return;
         }
   
@@ -26,3 +27,4 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Login button not found in the DOM.");
     }
   });
+
