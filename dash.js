@@ -33,10 +33,13 @@ function resetMonthlyHours() {
 }
 
 function updateSummary() {
-    document.querySelector('.summary-box:nth-child(1)').textContent = `Today: ${dailyHours} hrs`;
-    document.querySelector('.summary-box:nth-child(2)').textContent = `This Week: ${weeklyHours} hrs`;
-    document.querySelector('.summary-box:nth-child(3)').textContent = `This Month: ${monthlyHours} hrs`;
+    document.getElementById('today-hours').textContent = `Today: ${dailyHours} hrs`;
+    document.getElementById('week-hours').textContent = `This Week: ${weeklyHours} hrs`;
+    document.getElementById('month-hours').textContent = `This Month: ${monthlyHours} hrs`;
+    console.log(`Today: ${dailyHours} hrs, This Week: ${weeklyHours} hrs, This Month: ${monthlyHours} hrs`);
 }
+
+updateSummary();
 
 function punch() {
     const now = new Date();
