@@ -1,4 +1,4 @@
-// Initialize Firebase
+// 🔥 Initialize Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyCQ7s2il50q5Cfv-1FYeSkMt7ZuptlzDks",
     authDomain: "gepunch-da073.firebaseapp.com",
@@ -26,6 +26,15 @@ let monthlyHours = 0;
 const maxDailyHours = 6;
 
 const holidayDates = ["2025-04-23", "2025-04-27"];
+
+// Mock data for punch in/out times visualization
+const punchLogData = [
+    { day: 'Mon', punchIn: '09:00', punchOut: '15:00', hours: 6 },
+    { day: 'Tue', punchIn: '08:30', punchOut: '13:00', hours: 4.5 },
+    { day: 'Wed', punchIn: '10:00', punchOut: '13:00', hours: 3 },
+    { day: 'Thu', punchIn: '09:30', punchOut: '13:00', hours: 3.5 },
+    { day: 'Fri', punchIn: '11:00', punchOut: '13:00', hours: 2 }
+];
 
 function getOriginalWeeklyTarget() {
     switch (currentUser.role) {
@@ -85,6 +94,7 @@ function punchout() {
 
     updateSummary();
     checkSmartReminder();
+    updateWeeklyChart();
 
     alert(`Punched out. ${hoursWorked.toFixed(2)} hour(s) logged.`);
 }
@@ -119,18 +129,49 @@ function checkSmartReminder() {
     }
 }
 
+function timeToDecimal(timeStr) {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    return hours + (minutes / 60);
+}
+let weeklyChart = null;
+
 // Initialize weekly chart
 function initializeWeeklyChart() {
     const ctx = document.getElementById('weeklyChart').getContext('2d');
-    new Chart(ctx, {
+
+    const labels = punchLogData.map(day => day.day);
+    const punchInData = punchLogData.map(day => timeToDecimal(day.punchIn));
+    const punchOutData = punchLogData.map(day => timeToDecimal(day.punchOut));
+
+    weeklyChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-            datasets: [{
-                label: 'Hours Worked',
-                data: [5, 4.5, 3, 3.5, 2],
-                backgroundColor: 'rgba(59, 130, 246, 0.6)'
-            }]
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Punch In',
+                    data: punchInData,
+                    backgroundColor: 'rgba(59, 130, 246, 0.6)', // Blue
+                    order: 2
+                },
+                {
+                    label: 'Punch Out',
+                    data: punchOutData,
+                    backgroundColor: 'rgba(16, 185, 129, 0.6)', // Green
+                    order: 1
+                },
+                {
+                    type: 'line',
+                    label: 'Hours Worked',
+                    data: punchLogData.map(day => day.hours),
+                    borderColor: 'rgba(220, 38, 38, 0.8)', // Red
+                    backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true,
+                    order: 0
+                }
+            ]
         },
         options: {
             responsive: true,
@@ -139,12 +180,40 @@ function initializeWeeklyChart() {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Hours'
+                        text: 'Hours (24h format)'
+                    },
+                    max: 18 // Set max to 6pm (18:00)
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            const datasetLabel = context.dataset.label;
+                            const value = context.raw;
+
+                            // Convert decimal hours back to time format
+                            const hours = Math.floor(value);
+                            const minutes = Math.round((value - hours) * 60);
+                            const timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+                            if (datasetLabel === 'Hours Worked') {
+                                return `${datasetLabel}: ${value.toFixed(1)} hours`;
+                            }
+                            return `${datasetLabel}: ${timeStr}`;
+                        }
                     }
                 }
             }
         }
     });
+}
+
+
+function updateWeeklyChart() {
+    if (!weeklyChart) return;
+
+    weeklyChart.update();
 }
 
 // Event listeners
