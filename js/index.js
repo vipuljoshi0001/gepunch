@@ -32,6 +32,7 @@ submit.addEventListener("click", function (event)
       .then((userCredential) => {
         const user = userCredential.user;
         alert("SignIn Successful.");
+        window.location.href = "dashboard.html";
       })
       .catch((error) => {
         const errorCode = error.code;
