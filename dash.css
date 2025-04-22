@@ -83,7 +83,19 @@ header .real-time, header .real-date {
   padding: 0.5rem;
   font-size: 0.75rem;
   line-height: 1.25rem;
-  background-color: white; /* To ensure content is readable */
+  background-color: white; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#today-hours, #week-hours, #month-hours {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 1.5rem; 
+  margin-bottom: 4rem;
 }
 
 .lecture-section {
@@ -91,7 +103,7 @@ header .real-time, header .real-date {
   border-radius: 0.375rem;
   padding: 1rem;
   margin-bottom: 1.5rem;
-  background-color: white; /* Optional: to keep sections legible over the gradient */
+  background-color: white; 
 }
 
 .lecture-title {
