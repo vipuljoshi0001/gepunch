@@ -1,3 +1,3 @@
 # gepunch
 This website keeps the track of the faculty working hours and display it in graphical form .
-Languages
+Languages used in the 
