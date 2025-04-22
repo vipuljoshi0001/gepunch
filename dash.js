@@ -38,9 +38,9 @@ function updateSummary() {
     document.querySelector('.summary-box:nth-child(3)').textContent = `This Month: ${monthlyHours} hrs`;
 }
 
-function punch() {
+function punchin() {
     const now = new Date();
-    const startHour = 9;
+    const startHour = 0;
     const endHour = 17;
 
     if (now.getHours() >= startHour && now.getHours() < endHour) {
