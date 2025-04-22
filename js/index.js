@@ -1,7 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -17,32 +16,26 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-
-const email = document.getElementById("email").value;
-const password = document.getElementById("password").value;
+const auth = getAuth(app);
 
 const submit = document.getElementById("submit").value;
-submit.addEventListener("click", function(sigin)
+submit.addEventListener("click", function (event)
 {
     event.preventDefault()
-    const auth = getAuth();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
     signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-    // Signed in 
+      .then((userCredential) => {
+        // Signed in
         const user = userCredential.user;
         alert("SignIn Successful.");
-    // ...
-    })
-    .catch((error) => {
+        // ...
+      })
+      .catch((error) => {
         const errorCode = error.code;
-        if(errorCode==='auth/invalid-credential'){
-            showMessage('Incorrect Email or Password', 'signInMessage');
-        }
-        else{
-            showMessage('Account does not Exist', 'signInMessage');
-        }
-    });
-    
-})
+        const errorMessage = error.message;
+        alert(errorMessage);
+      });
+});
