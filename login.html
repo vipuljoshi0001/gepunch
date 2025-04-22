@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Login - Graphic Era Hill University</title>
   <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="js/index.js" defer></script>
 </head>
 <body>
   <div class="container">
@@ -29,12 +30,12 @@
 
       <form action="#" method="POST" autocomplete="off" class="form">
         <label class="input-wrapper">
-          <input type="email" name="email" placeholder="official mail id" />
+          <input id="email" type="email" name="email" placeholder="official mail id">
           <i class="fas fa-pencil-alt icon"></i>
         </label>
 
         <label class="input-wrapper">
-          <input type="password" name="password" placeholder="password" />
+          <input id="password" type="password" name="password" placeholder="password">
           <i class="fas fa-envelope-open-text icon"></i>
         </label>
 
@@ -49,7 +50,7 @@
           <i class="fas fa-chevron-down icon-right"></i>
         </label>
 
-        <button type="submit" class="login-button">log in</button>
+        <button id="submit" type="submit" class="login-button">log in</button>
       </form>
     </div>
   </div>
