@@ -27,3 +27,4 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Login button not found in the DOM.");
     }
   });
+
