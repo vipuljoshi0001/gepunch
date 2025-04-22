@@ -6,6 +6,8 @@
   <title>GE PUNCH</title>
   <link rel="stylesheet" href="dash.css" />
   <script src="dash.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js"></script>
 </head>
 <body>
   
@@ -45,7 +47,8 @@
 
 
     <div class="punch-button-wrapper">
-      <button class="punch-button" onclick="punchin()">Punch</button>
+      <button class="punch-button" onclick="punchin()">Punch In</button>
+      <button class="punch-button" onclick="punchout()">Punch Out</button>
     </div>
   </main>
 </body>
