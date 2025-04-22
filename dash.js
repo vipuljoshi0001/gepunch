@@ -32,6 +32,11 @@ function resetMonthlyHours() {
     updateSummary();
 }
 
+function calculateWorkDuration(start, end) {
+    const durationMs = end - start;
+    return +(durationMs / (1000 * 60 * 60)).toFixed(2); 
+}
+
 function updateSummary() {
     document.querySelector('.summary-box:nth-child(1)').textContent = `Today: ${dailyHours} hrs`;
     document.querySelector('.summary-box:nth-child(2)').textContent = `This Week: ${weeklyHours} hrs`;
