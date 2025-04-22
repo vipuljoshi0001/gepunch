@@ -2,53 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GE PUNCH</title>
-  <link rel="stylesheet" href="dash.css" />
-  <script src="dash.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>gepunch Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="css/dashboard.css" rel="stylesheet">
+
+  <!--Firebase-->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  
-  <header class="header">
-    <h1 class="title"><b>gepunch</b></h1>
-    <p id="real-time" class="real-time">Loading current time...</p>
-    <p id="real-date" class="real-date">Loading current date...</p>
-    <nav class="nav">
-      <button aria-label="Calendar" class="icon-btn" >
-        <i class="fas fa-calendar-alt"></i>
-      </button>
-      <button aria-label="Notifications" class="icon-btn">
-        <i class="fas fa-bell"></i>
-      </button>
-      <img
-        src="https://storage.googleapis.com/a1aa/image/15f9ccf6-cd9c-4aa5-c10b-d83a3d27e45b.jpg"
-        alt="User avatar"
-        class="avatar"
-      />
+  <div class="container">
+    <h1 class="page-title">gepunch Dashboard</h1>
 
-      </nav>
-    </nav>
-  </header>
-
-  <main class="main">
-  
-    <section class="summary-section">
-      <div class="summary-box" id="today-hours"><b>Today</b> 0 hrs</div>
-      <div class="summary-box" id="week-hours"><b>This Week</b> 0 hrs</div>
-      <div class="summary-box" id="month-hours"><b>This Month</b> 0 hrs</div>
-    </section>
-
-  
-    <section class="lecture-section">
-      <p class="lecture-title">Today’s Lecture</p>
-      <div class="lecture-bar">DBMS - 10:00 AM to 12:00 PM</div>
-<div class="lecture-bar">OOPS - 1:00 PM to 3:00 PM</div>
-<div class="lecture-bar">DSA - 3:00 PM to 5:00 PM</div>
-
-
-    <div class="punch-button-wrapper">
-      <button class="punch-button" onclick="punchin()">Punch</button>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <p class="card-label">Punch-In Time</p>
+        <p class="card-value" id="punch-in-time">--</p>
+      </div>
+      <div class="summary-card">
+        <p class="card-label">Punch-Out Time</p>
+        <p class="card-value" id="punch-out-time">--</p>
+      </div>
+      <div class="summary-card">
+        <p class="card-label">Total Time Today</p>
+        <p class="card-value" id="today-hours">--</p>
+      </div>
     </div>
-  </main>
+
+    <div class="overview-card">
+      <h2 class="section-title">Weekly Overview</h2>
+      <div class="overview-grid">
+        <div>
+          <ul class="stats-list">
+            <li id="required-hours">Required Hours: --</li>
+            <li id="completed-hours">Completed: --</li>
+            <li id="remaining-hours">Remaining: --</li>
+            <li id="avg-needed">Avg. Needed: --</li>
+          </ul>
+          <div class="progress-container">
+            <div id="progress-bar" class="progress-bar"></div>
+          </div>
+        </div>
+        <div>
+          <canvas id="weeklyChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="reminder-alert" id="smart-reminder" style="display:none"></div>
+
+    <div class="calendar-card">
+      <h2 class="section-title">Monthly Calendar View</h2>
+      <p class="placeholder-text">(Calendar widget integration goes here)</p>
+    </div>
+
+    <div class="button-group">
+      <button class="punch-in-btn" onclick="punchin()">Punch In</button>
+      <button class="punch-out-btn" onclick="punchout()">Punch Out</button>
+    </div>
+  </div>
+
+  <script src="js/dashboard.js"></script>
 </body>
 </html>
