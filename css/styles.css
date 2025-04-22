@@ -1,0 +1,144 @@
+body {
+  background-color: #f3f4f6;
+  color: #1f2937;
+  padding: 1.5rem;
+  font-family: 'Roboto', 'Arial', 'sans-serif';
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.card-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.card-value {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.placeholder-text {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .summary-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.summary-card, .overview-card, .calendar-card {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.overview-card, .calendar-card {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .overview-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+.stats-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.stats-list li {
+  margin-bottom: 0.5rem;
+}
+
+
+.progress-container {
+  width: 100%;
+  background-color: #e5e7eb;
+  border-radius: 9999px;
+  height: 0.75rem;
+  margin-top: 1rem;
+}
+
+.progress-bar {
+  background-color: #fbbf24;
+  height: 0.75rem;
+  border-radius: 9999px;
+  width: 0%;
+}
+
+.reminder-alert {
+  background-color: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #b91c1c;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.punch-in-btn, .punch-out-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.punch-in-btn {
+  background-color: #3b82f6;
+}
+
+.punch-out-btn {
+  background-color: #10b981;
+}
+
+.punch-in-btn:hover {
+  background-color: #2563eb;
+}
+
+.punch-out-btn:hover {
+  background-color: #059669;
+}
