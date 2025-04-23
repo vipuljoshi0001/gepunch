@@ -1,4 +1,4 @@
-// Initialize Firebase
+// 🔥 Initialize Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyCQ7s2il50q5Cfv-1FYeSkMt7ZuptlzDks",
     authDomain: "gepunch-da073.firebaseapp.com",
@@ -25,7 +25,16 @@ let weeklyHours = 0;
 let monthlyHours = 0;
 const maxDailyHours = 6;
 
-const holidayDates = ["2025-04-26", "2025-04-27","2025-05-03","2025-05-04","2025-05-09","2025-05-10","2025-05-011","2025-05-12","2025-05-17","2025-05-18"];
+const holidayDates = ["2025-04-26", "2025-04-27", "2025-05-03", "2025-05-04", "2025-05-09", "2025-05-10", "2025-05-11", "2025-05-12", "2025-05-17", "2025-05-18"];
+
+// Mock data for punch in/out times visualization
+const punchLogData = [
+    { day: 'Mon', punchIn: '09:00', punchOut: '15:00', hours: 6 },
+    { day: 'Tue', punchIn: '08:30', punchOut: '13:00', hours: 4.5 },
+    { day: 'Wed', punchIn: '10:00', punchOut: '13:00', hours: 3 },
+    { day: 'Thu', punchIn: '09:30', punchOut: '13:00', hours: 3.5 },
+    { day: 'Fri', punchIn: '11:00', punchOut: '13:00', hours: 2 }
+];
 
 function getOriginalWeeklyTarget() {
     switch (currentUser.role) {
@@ -82,8 +91,6 @@ function punchin() {
     alert(`Punched in at ${now.toLocaleTimeString()}`);
 }
 
-
-
 function punchout() {
     if (!punchInTime) {
         alert("Punch in first.");
@@ -128,7 +135,6 @@ function punchout() {
 
     alert(`Punched out. ${hoursWorked.toFixed(2)} hour(s) logged.`);
 }
-
 
 function updateSummary() {
     const adjustedTarget = getAdjustedWeeklyTarget();
@@ -186,6 +192,7 @@ function getChartDataFromLog() {
 
 let weeklyChart = null;
 
+// Initialize weekly chart
 function initializeWeeklyChart() {
     const ctx = document.getElementById('weeklyChart').getContext('2d');
 
@@ -264,9 +271,46 @@ function updateWeeklyChart() {
     weeklyChart.update();
 }
 
+// Event listeners
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(".punch-in-btn").addEventListener("click", punchin);
     document.querySelector(".punch-out-btn").addEventListener("click", punchout);
     updateSummary();
     initializeWeeklyChart();
+
+    document.querySelector('.user-profile').addEventListener('click', async () => {
+        const popup = document.querySelector('.popup');
+        const mainContent = document.querySelector('.container');
+
+        // Fetch the content of popup.html
+        const response = await fetch('popup.html');
+        const popupContent = await response.text();
+
+        // Insert the content into the popup container
+        popup.innerHTML = popupContent + '<span class="popup-close">&times;</span>';
+
+        // Display the popup and blur the background
+        popup.style.display = 'block';
+        popup.style.position = 'absolute';
+        popup.style.top = (document.querySelector('.user-profile').offsetTop + 180) + 'px';
+        popup.style.left = (document.querySelector('.user-profile').offsetLeft - 70) + 'px';
+        popup.style.zIndex = '1000';
+        mainContent.classList.add('blur-bg');
+
+        // Add event listener to close the popup
+        document.querySelector('.popup-close').addEventListener('click', () => {
+            popup.style.display = 'none';
+            mainContent.classList.remove('blur-bg');
+        });
+    });
+
+    document.addEventListener('click', (event) => {
+        const popup = document.querySelector('.popup');
+        const mainContent = document.querySelector('.container');
+
+        if (popup.style.display === 'block' && !popup.contains(event.target) && !event.target.closest('.user-profile')) {
+            popup.style.display = 'none';
+            mainContent.classList.remove('blur-bg');
+        }
+    });
 });
