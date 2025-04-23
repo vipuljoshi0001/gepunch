@@ -1,4 +1,4 @@
-// 🔥 Initialize Firebase
+// Initialize Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyCQ7s2il50q5Cfv-1FYeSkMt7ZuptlzDks",
     authDomain: "gepunch-da073.firebaseapp.com",
@@ -25,16 +25,7 @@ let weeklyHours = 0;
 let monthlyHours = 0;
 const maxDailyHours = 6;
 
-const holidayDates = ["2025-04-23", "2025-04-27"];
-
-// Mock data for punch in/out times visualization
-const punchLogData = [
-    { day: 'Mon', punchIn: '09:00', punchOut: '15:00', hours: 6 },
-    { day: 'Tue', punchIn: '08:30', punchOut: '13:00', hours: 4.5 },
-    { day: 'Wed', punchIn: '10:00', punchOut: '13:00', hours: 3 },
-    { day: 'Thu', punchIn: '09:30', punchOut: '13:00', hours: 3.5 },
-    { day: 'Fri', punchIn: '11:00', punchOut: '13:00', hours: 2 }
-];
+const holidayDates = ["2025-04-26", "2025-04-27","2025-05-03","2025-05-04","2025-05-09","2025-05-10","2025-05-011","2025-05-12","2025-05-17","2025-05-18"];
 
 function getOriginalWeeklyTarget() {
     switch (currentUser.role) {
@@ -64,24 +55,62 @@ function getAdjustedWeeklyTarget() {
 function punchin() {
     const now = new Date();
     const todayStr = now.toISOString().split("T")[0];
-    if (holidayDates.includes(todayStr) || now.getDay() === 0) return alert("Today is a holiday or Sunday.");
-    if (punchInTime) return alert("Already punched in.");
+    const dayOfWeek = now.getDay(); // 0 = Sunday, 6 = Saturday
 
+    // Block on Saturday or Sunday
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+        alert("Punch in not allowed on weekends (Saturday or Sunday).");
+        return;
+    }
+
+    // Block on national holidays
+    if (holidayDates.includes(todayStr)) {
+        alert("Today is a holiday. Punch in is not allowed.");
+        return;
+    }
+
+    // Check if user already punched in today
+    const alreadyPunchedToday = dailyLog.some(entry => entry.date === todayStr);
+    if (alreadyPunchedToday) {
+        alert("You have already punched in and out today.");
+        return;
+    }
+
+    // Proceed with punch in
     punchInTime = now;
     document.getElementById("punch-in-time").textContent = now.toLocaleTimeString();
     alert(`Punched in at ${now.toLocaleTimeString()}`);
 }
 
+
+
 function punchout() {
-    if (!punchInTime) return alert("Punch in first.");
+    if (!punchInTime) {
+        alert("Punch in first.");
+        return;
+    }
 
     const now = new Date();
+    const todayStr = now.toISOString().split("T")[0];
+
+    // Prevent multiple punchouts in a day
+    const alreadyLoggedToday = dailyLog.some(entry => entry.date === todayStr);
+    if (alreadyLoggedToday) {
+        alert("You have already punched out today.");
+        return;
+    }
+
     punchOutTime = now;
     let hoursWorked = (punchOutTime - punchInTime) / (1000 * 60 * 60);
     hoursWorked = Math.min(hoursWorked, maxDailyHours);
 
-    const dateStr = new Date().toISOString().split("T")[0];
-    dailyLog.push({ date: dateStr, in: punchInTime.toLocaleTimeString(), out: punchOutTime.toLocaleTimeString(), hours: hoursWorked.toFixed(2) });
+    // Save punch log
+    dailyLog.push({
+        date: todayStr,
+        in: punchInTime.toLocaleTimeString(),
+        out: punchOutTime.toLocaleTimeString(),
+        hours: hoursWorked.toFixed(2)
+    });
 
     weeklyHours += hoursWorked;
     monthlyHours += hoursWorked;
@@ -89,6 +118,7 @@ function punchout() {
     document.getElementById("punch-out-time").textContent = punchOutTime.toLocaleTimeString();
     document.getElementById("today-hours").textContent = `${hoursWorked.toFixed(2)} hrs`;
 
+    // Reset for the day
     punchInTime = null;
     punchOutTime = null;
 
@@ -98,6 +128,7 @@ function punchout() {
 
     alert(`Punched out. ${hoursWorked.toFixed(2)} hour(s) logged.`);
 }
+
 
 function updateSummary() {
     const adjustedTarget = getAdjustedWeeklyTarget();
@@ -133,38 +164,53 @@ function timeToDecimal(timeStr) {
     const [hours, minutes] = timeStr.split(':').map(Number);
     return hours + (minutes / 60);
 }
+
+function getChartDataFromLog() {
+    const labels = [];
+    const punchInData = [];
+    const punchOutData = [];
+    const hoursWorkedData = [];
+
+    dailyLog.forEach(log => {
+        const date = new Date(log.date);
+        const dayLabel = date.toLocaleDateString(undefined, { weekday: 'short' });
+        labels.push(dayLabel);
+
+        punchInData.push(timeToDecimal(log.in));
+        punchOutData.push(timeToDecimal(log.out));
+        hoursWorkedData.push(parseFloat(log.hours));
+    });
+
+    return { labels, punchInData, punchOutData, hoursWorkedData };
+}
+
 let weeklyChart = null;
 
-// Initialize weekly chart
 function initializeWeeklyChart() {
     const ctx = document.getElementById('weeklyChart').getContext('2d');
-
-    const labels = punchLogData.map(day => day.day);
-    const punchInData = punchLogData.map(day => timeToDecimal(day.punchIn));
-    const punchOutData = punchLogData.map(day => timeToDecimal(day.punchOut));
 
     weeklyChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: labels,
+            labels: [],
             datasets: [
                 {
                     label: 'Punch In',
-                    data: punchInData,
-                    backgroundColor: 'rgba(59, 130, 246, 0.6)', // Blue
+                    data: [],
+                    backgroundColor: 'rgba(59, 130, 246, 0.6)',
                     order: 2
                 },
                 {
                     label: 'Punch Out',
-                    data: punchOutData,
-                    backgroundColor: 'rgba(16, 185, 129, 0.6)', // Green
+                    data: [],
+                    backgroundColor: 'rgba(16, 185, 129, 0.6)',
                     order: 1
                 },
                 {
                     type: 'line',
                     label: 'Hours Worked',
-                    data: punchLogData.map(day => day.hours),
-                    borderColor: 'rgba(220, 38, 38, 0.8)', // Red
+                    data: [],
+                    borderColor: 'rgba(220, 38, 38, 0.8)',
                     backgroundColor: 'rgba(220, 38, 38, 0.1)',
                     borderWidth: 2,
                     tension: 0.4,
@@ -182,7 +228,7 @@ function initializeWeeklyChart() {
                         display: true,
                         text: 'Hours (24h format)'
                     },
-                    max: 18 // Set max to 6pm (18:00)
+                    max: 18
                 }
             },
             plugins: {
@@ -191,16 +237,12 @@ function initializeWeeklyChart() {
                         label: function (context) {
                             const datasetLabel = context.dataset.label;
                             const value = context.raw;
-
-                            // Convert decimal hours back to time format
-                            const hours = Math.floor(value);
-                            const minutes = Math.round((value - hours) * 60);
-                            const timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-
                             if (datasetLabel === 'Hours Worked') {
                                 return `${datasetLabel}: ${value.toFixed(1)} hours`;
                             }
-                            return `${datasetLabel}: ${timeStr}`;
+                            const hours = Math.floor(value);
+                            const minutes = Math.round((value - hours) * 60);
+                            return `${datasetLabel}: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
                         }
                     }
                 }
@@ -209,14 +251,19 @@ function initializeWeeklyChart() {
     });
 }
 
-
 function updateWeeklyChart() {
     if (!weeklyChart) return;
+
+    const { labels, punchInData, punchOutData, hoursWorkedData } = getChartDataFromLog();
+
+    weeklyChart.data.labels = labels;
+    weeklyChart.data.datasets[0].data = punchInData;
+    weeklyChart.data.datasets[1].data = punchOutData;
+    weeklyChart.data.datasets[2].data = hoursWorkedData;
 
     weeklyChart.update();
 }
 
-// Event listeners
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(".punch-in-btn").addEventListener("click", punchin);
     document.querySelector(".punch-out-btn").addEventListener("click", punchout);
