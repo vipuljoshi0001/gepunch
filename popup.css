@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+body {
+  background-color: white;
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 12rem; /* 48px * 4 = 192px */
+}
+
+.profile-img {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-name {
+  color: #2563eb; /* Tailwind's blue-600 */
+  font-weight: 800;
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: black;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.icon {
+  font-size: 1.125rem;
+}
+
+.logout-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.5rem 2rem;
+  font-size: 1rem;
+  font-weight: 400;
+  width: 100%;
+  max-width: 192px;
+  cursor: pointer;
+}
