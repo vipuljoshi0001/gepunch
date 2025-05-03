@@ -28,10 +28,10 @@ Teste the platform in action by visiting the live demo:
 ## 🖼️ Screenshots
 
 ###   Login
-![Login](https://github.com/hridyansh5492/ladderverse/blob/main/images/Screenshot%202025-04-17%20184340.png)
+![Login](https://github.com/vipuljoshi0001/gepunch/blob/main/images/Screenshot_2025-05-03_12-04-07.png)
 
 ###   DashBoard
-![DashBoard](https://github.com/hridyansh5492/ladderverse/blob/main/images/Screenshot%202025-04-17%20184340.png)
+![DashBoard](https://github.com/vipuljoshi0001/gepunch/blob/main/images/Screenshot_2025-04-26_18-50-12.png)
 
 ---
 
